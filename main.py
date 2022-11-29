@@ -35,7 +35,30 @@ diagonals = [d1, d2]
 alls = [rows, columns, diagonals]
 botlist = ["aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"]
 
-
+def sets():
+  global numb
+  f = open("tower.txt", "w")
+  f.close()
+  global L1
+  global L2
+  global L3
+  ph = ""
+  L1 = []
+  L2 = []
+  L3 = []
+  for i in range(numb):
+    ph = ""
+    for l in range(i + 1):
+      ph += "x"
+    L1.append(ph)
+  for i in range(numb):
+    L2.append("0")
+    L3.append("0")
+  reply = ""
+  reply = display(numb, reply)
+  return(reply)
+  write()
+  
 def setit():
   global alls
   global botlist
@@ -61,26 +84,25 @@ def setit():
   diagonals = [d1, d2]
   alls = [rows, columns, diagonals]
   botlist = ["aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"]
-  response = displayit()
-  return (reponse)
+  reply = displayit()
+  return (reply)
 
 
 def displayit():
   global alls
   global botlist
-  os.system('cls')
   reply = ""
   for i in range(3):
     for h in range(3):
       ph = alls[0][i][h]
       if ph == 0:
-        reply += "_"
+        reply += "-"
       elif ph == 1:
         reply += "x"
       else:
         reply += "o"
     reply += "\n"
-  return (response)
+  return (reply)
 
 
 def check():
@@ -193,6 +215,7 @@ def rg():
 
 
 def pm(pnum, location):
+  global player
   global alls
   d = 0
   e = 0
@@ -200,38 +223,44 @@ def pm(pnum, location):
   if pnum != 0:
     if len(botlist) >= 1:
       a = location
-      botlist.remove(a)
-      x = 0
-      for letter in a:
-        if x == 0:
-          if letter == "a":
-            d = 0
-          elif letter == "b":
-            d = 1
+      if a in botlist:
+        botlist.remove(a)
+        x = 0
+        for letter in a:
+          if x == 0:
+            if letter == "a":
+              d = 0
+            elif letter == "b":
+              d = 1
+            else:
+              d = 2
+            x = 1
           else:
-            d = 2
-          x = 1
+            if letter == "a":
+              e = 0
+            elif letter == "b":
+              e = 1
+            else:
+              e = 2
+        alls[0][d][e] = pnum
+        alls[1][e][d] = pnum
+        if d == e:
+          alls[2][0][e] = pnum
+          if d == 1:
+            alls[2][1][1] = pnum
+        elif e == 2 and d == 0:
+          alls[2][1][e] = pnum
+        elif e == 0 and d == 2:
+          alls[2][1][e] = pnum
+      else:
+        if player == 2:
+          player = 1
         else:
-          if letter == "a":
-            e = 0
-          elif letter == "b":
-            e = 1
-          else:
-            e = 2
-      alls[0][d][e] = pnum
-      alls[1][e][d] = pnum
-      if d == e:
-        alls[2][0][e] = pnum
-        if d == 1:
-          alls[2][1][1] = pnum
-      elif e == 2 and d == 0:
-        alls[2][1][e] = pnum
-      elif e == 0 and d == 2:
-        alls[2][1][e] = pnum
-  win = 4
-  response = displayit()
-  check()
-  return (response)
+          player = 2
+    win = 4
+    response = displayit()
+    check()
+    return (response)
 
 
 def test(order, player):
@@ -326,9 +355,6 @@ def display(num, reply):
   for i in range(num):
     f.write(str(L3[i]) + "\n")
   f.close()
-  f = open("list.txt", "w")
-  f.write("{\"L1\":")
-  f.close()
   with open('tower.txt') as f:
     for line in f:
       reply += line
@@ -356,14 +382,44 @@ async def on_connect():
 @bot.command(brief="Bot says hi")
 async def message(ctx):
   button1 = Button(label="Click Me!", style=discord.ButtonStyle.green)
-
   async def button1Clicked(interaction):
     await interaction.response.send_message("Welcome to Allison Bot!")
-    button1.callback = button1Clicked
-    view = View()
-    view.add_item(button1)
-    await ctx.reply("Guess what?")
+  button1.callback = button1Clicked
+  view = View()
+  view.add_item(button1)
+  await ctx.reply("Guess what?", view=view)
 
+@bot.command(brief="button tic tac toe")
+async def bttt(ctx):
+  global alls
+  global win
+  buttonaa = Button(label="", style=discord.ButtonStyle.green)
+  buttonab = Button(label="", style=discord.ButtonStyle.green)
+  buttonac = Button(label="", style=discord.ButtonStyle.green)
+  buttonba = Button(label="", style=discord.ButtonStyle.green)
+  buttonbb = Button(label="", style=discord.ButtonStyle.green)
+  buttonbc = Button(label="", style=discord.ButtonStyle.green)
+  buttonca = Button(label="", style=discord.ButtonStyle.green)
+  buttoncb = Button(label="", style=discord.ButtonStyle.green)
+  buttoncc = Button(label="", style=discord.ButtonStyle.green)
+  async def buttonaaClicked(interaction):
+    global buttonaa
+    global win
+    global alls
+    if alls[0][0][0] == 0:
+      buttonaa = Button(label="x", style=discord.ButtonStyle.green)
+      alls[0][0][0] = 1
+      win = check()
+      if win == 3:
+        await ctx.reply("its a tie!")
+      elif win == 1:
+        await ctx.reply("x wins!")
+      elif win == 2:
+        await ctx.reply("o wins!")
+  buttonaa.callback = buttonaaClicked
+  view = View()
+  view.add_item(buttonaa, buttonab, buttonac, buttonba, buttonbb, buttonbc, buttonca, buttoncb, buttoncc)
+  await ctx.reply("tic tac toe", view=view)
 
 #"Enter a name following command.\n Example: A!name May"
 @bot.command(brief="say hi!")
@@ -596,6 +652,14 @@ async def tset(ctx, num):
 #"Moves a piece from tower to tower. The start point comes first and end point second. Each tower has its own name (L1,L2,L3), enter two after command.\n Example: A!tmove L1 L2"
 @bot.command(brief="Moves a piece from tower to tower.")
 async def tmove(ctx, start, end):
+  button1 = Button(label="Reset", style=discord.ButtonStyle.green)
+  async def button1Clicked(interaction):
+    reply=sets()
+    await ctx.reply(reply)
+    
+  button1.callback = button1Clicked
+  view = View()
+  view.add_item(button1)
   global caty
   global numb
   test = globals()[start]
@@ -613,7 +677,7 @@ async def tmove(ctx, start, end):
     else:
       reply = ""
       reply = display(numb, reply)
-      await ctx.reply(reply)
+      await ctx.reply(reply, view=view)
       write()
       x = 0
       for i in L1:
@@ -634,12 +698,12 @@ async def tmove(ctx, start, end):
           await ctx.reply("You win!")
   else:
     await ctx.reply("Invalid move!")
-
+  
 
 @bot.command(brief="sets up new tic tac toe game")
 async def reset(ctx):
-  response = setit()
-  await ctx.reply(response)
+  reply = setit()
+  await ctx.reply(reply)
 
 
 @bot.command(brief="play a move")
@@ -650,8 +714,8 @@ async def pmove(ctx, location):
     player = player + 1
   else:
     player = player - 1
-  response = pm(pnum, location)
-  await ctx.reply(response)
+  reply = pm(pnum, location)
+  await ctx.reply(reply)
   if win == 3:
     await ctx.reply("its a tie!")
   elif win == 1:
