@@ -391,34 +391,515 @@ async def message(ctx):
 
 @bot.command(brief="button tic tac toe")
 async def bttt(ctx):
+  global p
+  global win
+  p=1
+  setit()
   global alls
   global win
-  buttonaa = Button(label="", style=discord.ButtonStyle.green)
-  buttonab = Button(label="", style=discord.ButtonStyle.green)
-  buttonac = Button(label="", style=discord.ButtonStyle.green)
-  buttonba = Button(label="", style=discord.ButtonStyle.green)
-  buttonbb = Button(label="", style=discord.ButtonStyle.green)
-  buttonbc = Button(label="", style=discord.ButtonStyle.green)
-  buttonca = Button(label="", style=discord.ButtonStyle.green)
-  buttoncb = Button(label="", style=discord.ButtonStyle.green)
-  buttoncc = Button(label="", style=discord.ButtonStyle.green)
+  buttonaa = Button(label=" ", style=discord.ButtonStyle.green, row=0)
+  buttonab = Button(label=" ", style=discord.ButtonStyle.green, row=0)
+  buttonac = Button(label=" ", style=discord.ButtonStyle.green, row=0)
+  buttonba = Button(label=" ", style=discord.ButtonStyle.green, row=1)
+  buttonbb = Button(label=" ", style=discord.ButtonStyle.green, row=1)
+  buttonbc = Button(label=" ", style=discord.ButtonStyle.green, row=1)
+  buttonca = Button(label=" ", style=discord.ButtonStyle.green, row=2)
+  buttoncb = Button(label=" ", style=discord.ButtonStyle.green, row=2)
+  buttoncc = Button(label=" ", style=discord.ButtonStyle.green, row=2)
+  #buttonaa.disabled=False
+  #buttonab.disabled=False
+  #buttonac.disabled=False
+  #buttonba.disabled=False
+  #buttonbb.disabled=False
+  #buttonbc.disabled=False
+  #buttonca.disabled=False
+  #buttoncb.disabled=False
+  #buttoncc.disabled=False
   async def buttonaaClicked(interaction):
-    global buttonaa
+    nonlocal buttonaa
+    global p
     global win
     global alls
-    if alls[0][0][0] == 0:
-      buttonaa = Button(label="x", style=discord.ButtonStyle.green)
-      alls[0][0][0] = 1
-      win = check()
-      if win == 3:
-        await ctx.reply("its a tie!")
-      elif win == 1:
-        await ctx.reply("x wins!")
-      elif win == 2:
-        await ctx.reply("o wins!")
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonaa = Button(label=a, style=discord.ButtonStyle.green, row=0)
+    buttonaa.disabled=True
+    alls[0][0][0] = p
+    alls[1][0][0] = p
+    alls[2][0][0] = p
+    print(alls)
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
   buttonaa.callback = buttonaaClicked
+  async def buttonabClicked(interaction):
+    nonlocal buttonab
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonab = Button(label=a, style=discord.ButtonStyle.green, row=0)
+    buttonab.disabled=True
+    alls[0][0][1] = p
+    alls[1][1][0] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonab.callback = buttonabClicked
+  async def buttonacClicked(interaction):
+    nonlocal buttonac
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonac = Button(label=a, style=discord.ButtonStyle.green, row=0)
+    buttonac.disabled=True
+    alls[0][0][2] = p
+    alls[1][2][0] = p
+    alls[2][1][0] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonac.callback = buttonacClicked
+  async def buttonbaClicked(interaction):
+    nonlocal buttonba
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonba = Button(label=a, style=discord.ButtonStyle.green, row=1)
+    buttonba.disabled=True
+    alls[0][1][0] = p
+    alls[1][0][1] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonba.callback = buttonbaClicked
+  async def buttonbbClicked(interaction):
+    nonlocal buttonbb
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonbb = Button(label=a, style=discord.ButtonStyle.green, row=1)
+    buttonbb.disabled=True
+    alls[0][1][1] = p
+    alls[1][1][1] = p
+    alls[2][0][1] = p
+    alls[2][1][1] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonbb.callback = buttonbbClicked
+  async def buttonbcClicked(interaction):
+    nonlocal buttonbc
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonbc = Button(label=a, style=discord.ButtonStyle.green, row=1)
+    buttonbc.disabled=True
+    alls[0][1][2] = p
+    alls[1][2][1] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonbc.callback = buttonbcClicked
+  async def buttoncaClicked(interaction):
+    nonlocal buttonca
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttonca = Button(label=a, style=discord.ButtonStyle.green, row=2)
+    buttonca.disabled=True
+    alls[0][2][0] = p
+    alls[1][0][2] = p
+    alls[2][1][2] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttonca.callback = buttoncaClicked
+  async def buttoncbClicked(interaction):
+    nonlocal buttoncb
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttoncb = Button(label=a, style=discord.ButtonStyle.green, row=2)
+    buttoncb.disabled=True
+    alls[0][2][1] = p
+    alls[1][1][2] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttoncb.callback = buttoncbClicked
+  async def buttonccClicked(interaction):
+    nonlocal buttoncc
+    global p
+    global win
+    global alls
+    if p == 1:
+      p = 2
+      a = "o"
+    elif p == 2:
+      p = 1
+      a = "x"
+    buttoncc = Button(label=a, style=discord.ButtonStyle.green, row=2)
+    buttoncc.disabled=True
+    alls[0][2][2] = p
+    alls[1][2][2] = p
+    alls[2][0][2] = p
+    check()
+    if win == 3:
+      await ctx.reply("its a tie!")
+    elif win == 1:
+      await ctx.reply("x wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    elif win == 2:
+      await ctx.reply("o wins!")
+      buttonaa.disabled=True
+      buttonab.disabled=True
+      buttonac.disabled=True
+      buttonba.disabled=True
+      buttonbb.disabled=True
+      buttonbc.disabled=True
+      buttonca.disabled=True
+      buttoncb.disabled=True
+      buttoncc.disabled=True
+    view = View()
+    view.add_item(buttonaa)
+    view.add_item(buttonab)
+    view.add_item(buttonac)
+    view.add_item(buttonba)
+    view.add_item(buttonbb)
+    view.add_item(buttonbc)
+    view.add_item(buttonca)
+    view.add_item(buttoncb)
+    view.add_item(buttoncc)
+    await interaction.response.edit_message(view=view)
+  buttoncc.callback = buttonccClicked
   view = View()
-  view.add_item(buttonaa, buttonab, buttonac, buttonba, buttonbb, buttonbc, buttonca, buttoncb, buttoncc)
+  view.add_item(buttonaa)
+  view.add_item(buttonab)
+  view.add_item(buttonac)
+  view.add_item(buttonba)
+  view.add_item(buttonbb)
+  view.add_item(buttonbc)
+  view.add_item(buttonca)
+  view.add_item(buttoncb)
+  view.add_item(buttoncc)
   await ctx.reply("tic tac toe", view=view)
 
 #"Enter a name following command.\n Example: A!name May"
@@ -656,7 +1137,7 @@ async def tmove(ctx, start, end):
   async def button1Clicked(interaction):
     reply=sets()
     await ctx.reply(reply)
-    
+    write()
   button1.callback = button1Clicked
   view = View()
   view.add_item(button1)
